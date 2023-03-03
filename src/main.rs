@@ -14,10 +14,20 @@ static PROJECT_DIRS: [&str; 5] = [
 fn create_directories() -> Result<()> {
     println!("Creating Directories");
 
-    let old_files = fs::read_dir(".").into_diagnostic()?;
+    let old_files: Vec<std::result::Result<fs::DirEntry, std::io::Error>> =
+        fs::read_dir(".").into_diagnostic()?.into_iter().collect();
 
     for dir in PROJECT_DIRS {
         fs::create_dir(dir).map_err(|_| miette!("Could not create directory '{}'", dir))?;
+    }
+
+    if !Confirm::new()
+        .with_prompt("Do you want to move old files into the Archive?")
+        .default(false)
+        .interact()
+        .into_diagnostic()?
+    {
+        return Ok(());
     }
 
     for old_file in old_files {
@@ -25,7 +35,8 @@ fn create_directories() -> Result<()> {
         fs::rename(
             old_file.path(),
             "4 Archive/".to_owned() + old_file.file_name().to_str().unwrap(),
-        ).into_diagnostic()?;
+        )
+        .into_diagnostic()?;
     }
 
     Ok(())
