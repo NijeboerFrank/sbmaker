@@ -1,0 +1,12 @@
+#+title: sbmaker
+
+=sbmaker= (Second Brain Maker) is a simple command line application that allows
+users to quickly create a directory structure according to [[https://fortelabs.com/blog/para/][The PARA Method: A
+Universal System for Organizing Digital Information]] by Tiago Forte.
+
+Currently, you can use =sbmaker= to create or remove the PARA system from the
+current working directory. In the future, you can hopefully do more with the
+methods from the book!
+
+* Todos
+- [ ] Move away from the chooser and use [[https://docs.rs/clap/latest/clap/][clap]]
